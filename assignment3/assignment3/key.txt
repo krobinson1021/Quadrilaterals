@@ -1,0 +1,10 @@
+square
+parallelogram
+rectangle
+NO MATCH
+parallelogram
+kite
+rectangle
+trapezoid
+rhombus
+square
