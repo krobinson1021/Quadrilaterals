@@ -1,7 +1,8 @@
-all: main
+all: main test
 
 main: main.cpp
-	g++ -o main.o -c main.cpp
+	clang++ -c main.cpp
+	clang++ -o main main.o
 
 test: main
 	chmod +x test.sh
