@@ -1,6 +1,6 @@
+script: make
+
 language: cpp
 
 compiler:
   - clang
-
-script: make && make test
