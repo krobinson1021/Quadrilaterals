@@ -1,5 +1,3 @@
-script: make
-
 language: cpp
 
 compiler:
