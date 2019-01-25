@@ -155,7 +155,7 @@ bool isKite(const quadrilateral& q) {
 /*
  Prints the most specific classification of the quadrilateral to the console
  on its own line; if quadrilateral is not a square, rhombus, rectangle, parallelogram,
- kite, or trapezoid, it will print "NO MATCH"
+ kite, or trapezoid, it will print quadrilateral
  */
 void printQuadrType(const quadrilateral& q) {
     if (isSquare(q)) {
