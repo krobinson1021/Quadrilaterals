@@ -79,8 +79,7 @@ bool allRightAngles(const quadrilateral& q) {
     double negRecipSlopeL = -1.0 / slopeL;
     double negRecipSlopeR = -1.0 / slopeR;
     bool sidesAreVertical = (slopeL == 1000000) && (slopeR == 1000000) && (abs(slopeT) < tolerance) && (abs(slopeB) < tolerance);
-    bool slopesAreNegReciprocals = (abs(slopeL - negRecipSlopeL) < tolerance) && (abs(slopeR - negRecipSlopeR) < tolerance);
-    return sidesAreVertical || slopesAreNegReciprocals;
+    return sidesAreVertical;
 }
 
 /*
@@ -98,8 +97,7 @@ bool topAndBottomParallel(const quadrilateral& q) {
 bool leftAndRightParallel(const quadrilateral& q) {
     double slopeR = slope(q.corner4.x, q.corner4.y, q.corner3.x, q.corner3.y);
     double slopeL = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
-    bool sidesAreVertical = (slopeR == INFINITY) && (slopeL == INFINITY);
-    return (abs(slopeL - slopeR) < tolerance) || sidesAreVertical;
+    return (abs(slopeL - slopeR) < tolerance);
 }
 
 bool sidesEqualLength(quadrilateral q) {
@@ -151,7 +149,7 @@ bool isKite(const quadrilateral& q) {
     double lengthT = distance(q.corner3.x, q.corner3.y, q.corner4.x, q.corner4.y);
     double lengthL = distance(q.corner4.x, q.corner4.y, q.corner1.x, q.corner1.y);
     double lengthR = distance(q.corner2.x, q.corner2.y, q.corner3.x, q.corner3.y);
-    return ((lengthB == lengthR) && (lengthL == lengthT)) || ((lengthL == lengthB) && (lengthR == lengthT));
+    return (lengthL == lengthB) && (lengthR == lengthT);
 }
 
 /*
