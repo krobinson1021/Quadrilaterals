@@ -6,7 +6,6 @@
 //  Copyright © 2019 Katie Robinson. All rights reserved.
 //
 
-#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -71,6 +70,9 @@ double distance(double x1, double y1, double x2, double y2) {
  Returns slope of the line between two points
  */
 double slope(double x1, double y1, double x2, double y2) {
+    if (x2 - x1 < tolerance) {
+        return 1000000;
+    }
     return ((y2 - y1) / (x2 - x1));
 }
 
@@ -84,33 +86,33 @@ bool allRightAngles(const quadrilateral& q) {
     double slopeB = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
     double negRecipSlopeL = -1.0 / slopeL;
     double negRecipSlopeR = -1.0 / slopeR;
-    bool sidesAreVerticle = (slopeL == INFINITY) && (slopeR == INFINITY) && (abs(slopeT) < tolerance) && (abs(slopeB) < tolerance);
+    bool sidesAreVertical = (slopeL == INFINITY) && (slopeR == INFINITY) && (abs(slopeT) < tolerance) && (abs(slopeB) < tolerance);
     bool slopesAreNegReciprocals = (abs(slopeL - negRecipSlopeL) < tolerance) && (abs(slopeR - negRecipSlopeR) < tolerance);
-    return sidesAreVerticle || slopesAreNegReciprocals;
+    return sidesAreVertical || slopesAreNegReciprocals;
 }
 
 /*
  Returns true if top and bottom sides of quadrilateral are parallel
  */
 bool topAndBottomParallel(const quadrilateral& q) {
-    double slopeL = slope(q.corner1.x, q.corner1.y, q.corner4.x, q.corner4.y);
-    double slopeR = slope(q.corner2.x, q.corner2.y, q.corner3.x, q.corner3.y);
-    return abs(slopeL - slopeR) < tolerance;
+    double slopeB = slope(q.corner1.x, q.corner1.y, q.corner4.x, q.corner4.y);
+    double slopeT = slope(q.corner2.x, q.corner2.y, q.corner3.x, q.corner3.y);
+    return abs(slopeB - slopeT) < tolerance;
 }
 
 /*
  Returns true if left and right sides of quadrilateral are parallel
  */
 bool leftAndRightParallel(const quadrilateral& q) {
-    double slopeT = slope(q.corner4.x, q.corner4.y, q.corner3.x, q.corner3.y);
-    double slopeB = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
-    return abs(slopeB - slopeT) < tolerance;
+    double slopeR = slope(q.corner4.x, q.corner4.y, q.corner3.x, q.corner3.y);
+    double slopeL = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
+    bool sidesAreVertical = (slopeR == 1000000) && (slopeL == 1000000);
+    return (abs(slopeL - slopeR) < tolerance) || sidesAreVertical;
 }
 
 bool sidesEqualLength(quadrilateral q) {
     double lengthB = distance(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
     double lengthL = distance(q.corner1.x, q.corner1.y, q.corner4.x, q.corner4.y);
-    cout << " lB: " << lengthB << " lL: " << lengthL << endl;
     return abs(lengthB - lengthL) < tolerance;
 }
 
@@ -193,23 +195,6 @@ void outputAllClassifications(const vector<quadrilateral>& data) {
         printQuadrType(data[i]);
     }
     cout << endl;
-}
-
-/*
- Helper function to print formatted coordinates of all quadrilaterals in
- vector to improve visualization; formatted as (x,y) (x,y) (x,y) (x,y)\n
- */
-void printQuadrCoordinates(const vector<quadrilateral>& data) {
-    for (int i = 0; i < data.size(); i++) {
-        cout << "(" << data[i].corner1.x;
-        cout << "," << data[i].corner1.y << ") ";
-        cout << "(" << data[i].corner2.x;
-        cout << "," << data[i].corner2.y << ") ";
-        cout << "(" << data[i].corner3.x;
-        cout << "," << data[i].corner3.y << ") ";
-        cout << "(" << data[i].corner4.x;
-        cout << "," << data[i].corner4.y << ")" << endl;
-    }
 }
 
 int main(int argc, const char * argv[]) {
