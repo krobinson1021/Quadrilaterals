@@ -1,6 +1,12 @@
-script: make
-
 language: cpp
 
 compiler:
   - clang
+
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode10.1
+    
+    - os: osx
+      osx_image: xcode9.4
