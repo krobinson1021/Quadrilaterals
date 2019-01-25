@@ -194,7 +194,6 @@ void outputAllClassifications(const vector<quadrilateral>& data) {
     for (int i = 0; i < data.size(); i++) {
         printQuadrType(data[i]);
     }
-    cout << endl;
 }
 
 int main(int argc, const char * argv[]) {
