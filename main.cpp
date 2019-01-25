@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  assignment3
-//
-//  Created by Katie Robinson on 1/15/19.
-//  Copyright © 2019 Katie Robinson. All rights reserved.
-//
-
 #include <fstream>
 #include <iostream>
 #include <iomanip>
