@@ -91,7 +91,7 @@ bool allRightAngles(const quadrilateral& q) {
     return sidesAreVertical || slopesAreNegReciprocals;
 }
 
-/*
+/* 
  Returns true if top and bottom sides of quadrilateral are parallel
  */
 bool topAndBottomParallel(const quadrilateral& q) {
