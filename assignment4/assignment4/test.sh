@@ -1,7 +1,8 @@
-./main < squares.txt | grep 'square tests passed' &&
-./main < rectangles.txt | grep 'rectangle tests passed' &&
-./main < parallelograms.txt | grep 'parallelogram tests passed' &&
-./main < rhombi.txt | grep 'rhombi tests passed' &&
-./main < trapezoids.txt | grep 'trapezoid tests passed' &&
-./main < kites.txt | grep 'kite tests passed' &&
-./main < quadrilaterals.txt | grep 'quadrilateral tests passed'
+./main < squares.txt > output.txt
+./main < rectangles.txt >> output.txt
+./main < parallelograms.txt >> output.txt
+./main < rhombi.txt >> output.txt
+./main < trapezoids.txt >> output.txt
+./main < kites.txt >> output.txt
+./main < quadrilaterals.txt >> output.txt
+diff output.txt expected_output.txt

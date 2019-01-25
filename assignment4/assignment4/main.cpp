@@ -86,12 +86,12 @@ bool allRightAngles(const quadrilateral& q) {
     double slopeB = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
     double negRecipSlopeL = -1.0 / slopeL;
     double negRecipSlopeR = -1.0 / slopeR;
-    bool sidesAreVertical = (slopeL == INFINITY) && (slopeR == INFINITY) && (abs(slopeT) < tolerance) && (abs(slopeB) < tolerance);
+    bool sidesAreVertical = (slopeL == 1000000) && (slopeR == 1000000) && (abs(slopeT) < tolerance) && (abs(slopeB) < tolerance);
     bool slopesAreNegReciprocals = (abs(slopeL - negRecipSlopeL) < tolerance) && (abs(slopeR - negRecipSlopeR) < tolerance);
     return sidesAreVertical || slopesAreNegReciprocals;
 }
 
-/* 
+/*
  Returns true if top and bottom sides of quadrilateral are parallel
  */
 bool topAndBottomParallel(const quadrilateral& q) {
@@ -106,7 +106,7 @@ bool topAndBottomParallel(const quadrilateral& q) {
 bool leftAndRightParallel(const quadrilateral& q) {
     double slopeR = slope(q.corner4.x, q.corner4.y, q.corner3.x, q.corner3.y);
     double slopeL = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
-    bool sidesAreVertical = (slopeR == 1000000) && (slopeL == 1000000);
+    bool sidesAreVertical = (slopeR == INFINITY) && (slopeL == INFINITY);
     return (abs(slopeL - slopeR) < tolerance) || sidesAreVertical;
 }
 
