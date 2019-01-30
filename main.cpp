@@ -17,6 +17,10 @@ struct coordinatePair {
     double y;
 };
 
+bool coordinatesCoincide(coordinatePair first, coordinatePair second) {
+    return ((first.x == second.x) && (first.y == second.y));
+}
+
 /*
  Struct representing a quadrilateral, with the corners labeled in counterclockwise fashion
  */
@@ -33,19 +37,36 @@ struct quadrilateral {
  Each string in the vector must contain all 8 coordinates for a quadrilateral
  separated by spaces
  */
-vector<quadrilateral> createQuadrsFromData(const vector<string>& data) {
+vector<quadrilateral> createQuadrsFromData(const vector<vector<string>>& data) {
     vector<quadrilateral> allQuadrilaterals;
-    for (int i = 0; i < data.size(); i+=6) {
+    for (int i = 0; i < data.size(); i++) { // for each line in file, add points to quadrilateral
         quadrilateral q;
         q.corner1.x = 0.0;
         q.corner1.y = 0.0;
-        q.corner2.x = stod(data[i]);
-        q.corner2.y = stod(data[i + 1]);
-        q.corner3.x = stod(data[i + 2]);
-        q.corner3.y = stod(data[i + 3]);
-        q.corner4.x = stod(data[i + 4]);
-        q.corner4.y = stod(data[i + 5]);
-        allQuadrilaterals.push_back(q);
+        try {
+            q.corner2.x = stod(data[i][0]);
+            q.corner2.y = stod(data[i][1]);
+            q.corner3.x = stod(data[i][2]);
+            q.corner3.y = stod(data[i][3]);
+            q.corner4.x = stod(data[i][4]);
+            q.corner4.y = stod(data[i][5]);
+        } catch (const invalid_argument& ia) {
+            cout << "error 1" << endl;
+            exit (EXIT_FAILURE);
+        } catch (const out_of_range& oor) {
+            cout << "error 1" << endl;
+            exit (EXIT_FAILURE);
+        }
+        if ((q.corner1.x > 100) || (q.corner1.x < 0) || (q.corner1.y > 100) || (q.corner1.y < 0) || (q.corner2.y > 100) || (q.corner2.y < 0) || (q.corner2.y > 100) || (q.corner2.y < 0) || (q.corner3.y > 100) || (q.corner3.y < 0) || (q.corner3.y > 100) || (q.corner3.y < 0) ||
+            (q.corner4.y > 100) || (q.corner4.y < 0) || (q.corner4.y > 100) || (q.corner4.y < 0)) {
+            cout << "error 1" << endl; // at least one point is outside range
+            exit (EXIT_FAILURE);
+        }
+        if (coordinatesCoincide(q.corner1, q.corner2) || coordinatesCoincide(q.corner1, q.corner3) || coordinatesCoincide(q.corner1, q.corner4) || coordinatesCoincide(q.corner2, q.corner3) || coordinatesCoincide(q.corner2, q.corner4) || coordinatesCoincide(q.corner3, q.corner4)) {
+            cout << "error 2" << endl; // at least two points coincide
+            exit (EXIT_FAILURE);
+        }
+        allQuadrilaterals.push_back(q); // add quadrilateral to vector
     }
     return allQuadrilaterals;
 }
@@ -190,11 +211,19 @@ void outputAllClassifications(const vector<quadrilateral>& data) {
 int main(int argc, const char * argv[]) {
     
     cout.precision(4);
-    vector<string> allInput;
-    string input;
+    vector<vector<string>> allInput;
+    string line;
+    string delimiter = " ";
     while (!cin.eof()) { // as long as there is data to read and the end of the file is not reached
-        cin >> input;
-        allInput.push_back(input);
+        getline(cin, line);
+        istringstream ss(line);
+        istream_iterator<string> begin(ss), end;
+        vector<string> numbersInLine(begin, end); //putting each number in the vector
+        if (numbersInLine.size() != 6) { // if line does not have the right number of points, quit
+            cout << "error 1" << endl;
+            exit (EXIT_FAILURE);
+        }
+        allInput.push_back(numbersInLine);
     }
     vector<quadrilateral> allQuadrilaterals = createQuadrsFromData(allInput);
     outputAllClassifications(allQuadrilaterals);
