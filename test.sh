@@ -5,5 +5,4 @@
 ./main < trapezoids.txt >> output.txt
 ./main < kites.txt >> output.txt
 ./main < quadrilaterals.txt >> output.txt
-./main < intersect.txt >> output.txt
 diff output.txt expected_output.txt
