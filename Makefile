@@ -1,4 +1,4 @@
-all: main test coverage
+all: main test
 
 main: main.cpp
 	clang++ -c main.cpp
