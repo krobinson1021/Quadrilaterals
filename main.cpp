@@ -111,18 +111,12 @@ vector<quadrilateral> createQuadrsFromData(const vector<vector<string>>& data) {
         quadrilateral q;
         q.corner1.x = 0.0;
         q.corner1.y = 0.0;
-        try {
-            q.corner2.x = stod(data[i][0]);
-            q.corner2.y = stod(data[i][1]);
-            q.corner3.x = stod(data[i][2]);
-            q.corner3.y = stod(data[i][3]);
-            q.corner4.x = stod(data[i][4]);
-            q.corner4.y = stod(data[i][5]);
-        } catch (const invalid_argument& ia) { // if entry is not a number and cannot be converted
-            error(1);
-        } catch (const out_of_range& oor) { // if entry is not representable by a double
-            error(1);
-        }
+        q.corner2.x = stod(data[i][0]);
+        q.corner2.y = stod(data[i][1]);
+        q.corner3.x = stod(data[i][2]);
+        q.corner3.y = stod(data[i][3]);
+        q.corner4.x = stod(data[i][4]);
+        q.corner4.y = stod(data[i][5]);
         if (shapeCoordinatesAreOutOfRange(q)) {
             error(1);
         }

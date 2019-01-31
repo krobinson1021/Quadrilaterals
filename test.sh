@@ -25,4 +25,5 @@
 ./main < error3H.txt >> output.txt
 ./main < error4A.txt >> output.txt
 ./main < error4B.txt >> output.txt
+./main < error4C.txt >> output.txt
 diff output.txt expected_output.txt

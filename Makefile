@@ -37,6 +37,7 @@ coverage:
 	-LLVM_PROFILE_FILE="error3H.profraw" ./main < error3H.txt
 	-LLVM_PROFILE_FILE="error4A.profraw" ./main < error4A.txt
 	-LLVM_PROFILE_FILE="error4B.profraw" ./main < error4B.txt
-	llvm-profdata merge -sparse main.profraw squares.profraw rectangles.profraw parallelograms.profraw rhombi.profraw kites.profraw trapezoids.profraw quadrilaterals.profraw error1A.profraw error1B.profraw error1C.profraw error1D.profraw error1E.profraw error1F.profraw error1G.profraw error1H.profraw error2A.profraw error2B.profraw error3A.profraw error3B.profraw error3C.profraw error3D.profraw error3E.profraw error3F.profraw error3G.profraw error3H.profraw error4A.profraw error4B.profraw -o main.profdata
+	-LLVM_PROFILE_FILE="error4C.profraw" ./main < error4C.txt
+	llvm-profdata merge -sparse main.profraw squares.profraw rectangles.profraw parallelograms.profraw rhombi.profraw kites.profraw trapezoids.profraw quadrilaterals.profraw error1A.profraw error1B.profraw error1C.profraw error1D.profraw error1E.profraw error1F.profraw error1G.profraw error1H.profraw error2A.profraw error2B.profraw error3A.profraw error3B.profraw error3C.profraw error3D.profraw error3E.profraw error3F.profraw error3G.profraw error3H.profraw error4A.profraw error4B.profraw error4C.profraw -o main.profdata
 	llvm-cov show ./main -instr-profile=main.profdata
 
