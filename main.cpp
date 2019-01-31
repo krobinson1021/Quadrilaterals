@@ -17,10 +17,6 @@ struct coordinatePair {
     double y;
 };
 
-bool coordinatesCoincide(coordinatePair first, coordinatePair second) {
-    return ((first.x == second.x) && (first.y == second.y));
-}
-
 /*
  Struct representing a quadrilateral, with the corners labeled in counterclockwise fashion
  */
@@ -30,6 +26,78 @@ struct quadrilateral {
     coordinatePair corner3;
     coordinatePair corner4;
 } ;
+
+/*
+ True if coordinates are the same.
+ */
+bool areEqual(coordinatePair first, coordinatePair second) {
+    return ((first.x == second.x) && (first.y == second.y));
+}
+
+/*
+ True if quadrilateral has at least one pair of equal coordinates.
+ */
+bool shapeCoordinatesCoincide(quadrilateral q) {
+    return (areEqual(q.corner1, q.corner2) || areEqual(q.corner1, q.corner3) || areEqual(q.corner1, q.corner4) || areEqual(q.corner2, q.corner3) || areEqual(q.corner2, q.corner4) || areEqual(q.corner3, q.corner4));
+}
+
+/*
+ True if coordinates are colinear.
+ */
+bool hasThreeOrMoreColinearPoints(quadrilateral q) {
+    return (q.corner1.x == q.corner2.x && q.corner2.x == q.corner3.x) || (q.corner1.x == q.corner3.x && q.corner3.x == q.corner4.x) || (q.corner2.x == q.corner3.x && q.corner3.x == q.corner4.x) || (q.corner1.x == q.corner2.x && q.corner2.x == q.corner4.x) || (q.corner1.y == q.corner2.y && q.corner2.y == q.corner3.y) || (q. corner1.y == q.corner3.y && q.corner3.y == q.corner4.y) || (q.corner2.y == q.corner3.y && q.corner3.y == q.corner4.y) || (q.corner1.y == q.corner2.y && q.corner2.y == q.corner4.y);
+}
+
+/*
+ True if at least one value is outside range.
+ */
+bool shapeCoordinatesAreOutOfRange(quadrilateral q) {
+    return ((q.corner1.x > 100) || (q.corner1.x < 0) || (q.corner1.y > 100) || (q.corner1.y < 0) || (q.corner2.y > 100) || (q.corner2.y < 0) || (q.corner2.y > 100) || (q.corner2.y < 0) || (q.corner3.y > 100) || (q.corner3.y < 0) || (q.corner3.y > 100) || (q.corner3.y < 0) ||
+            (q.corner4.y > 100) || (q.corner4.y < 0) || (q.corner4.y > 100) || (q.corner4.y < 0));
+}
+
+/*
+ Returns true if string contains non-digit characters.
+ */
+bool containsInvalidChars(string s) {
+    for (char c : s) {
+        if (!isdigit(c)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/*
+ This description applies to the following two functions.
+ Algorithm for determining whether line segments cross referenced from https://bryceboe.com "Line Segment Intersection Algorithm"
+ pointsAreCounterClockWise() is a helper function called in lineSegmentsIntersect().
+ lineSegmentsIntersect() returns true if line segments cross each other.
+ pointsAreCounterClockWise returns true if the points are counter clockwise.
+ */
+bool pointsAreCounterClockWise(coordinatePair A, coordinatePair B, coordinatePair C) {
+    return ((C.y - A.y) * (B.x - A.x)) > ((B.y - A.y) * (C.x - A.x));
+}
+
+bool lineSegmentsIntersect(coordinatePair A, coordinatePair B, coordinatePair C, coordinatePair D) {
+    return (pointsAreCounterClockWise(A, C, D) != pointsAreCounterClockWise(B, C, D)) && (pointsAreCounterClockWise(A, B, C) != pointsAreCounterClockWise(A, B, D));
+}
+
+/*
+ True if any lines in quadrilateral intersect.
+ Only compares opposite sides because it is logically impossible for adjacent sides to intersect.
+ */
+bool shapeSidesIntersect(quadrilateral q) {
+    return (lineSegmentsIntersect(q.corner1, q.corner2, q.corner3, q.corner4) || lineSegmentsIntersect(q.corner2, q.corner3, q.corner4, q.corner1));
+}
+
+/*
+ Helper function to simplify error handling.
+ */
+void error(int errorValue) {
+    cout << "error " << errorValue << endl; // at least one point is outside range
+    exit (EXIT_FAILURE);
+}
 
 /*
  Returns a vector of quadrilaterals populated the data from the vector of strings;
@@ -50,21 +118,22 @@ vector<quadrilateral> createQuadrsFromData(const vector<vector<string>>& data) {
             q.corner3.y = stod(data[i][3]);
             q.corner4.x = stod(data[i][4]);
             q.corner4.y = stod(data[i][5]);
-        } catch (const invalid_argument& ia) {
-            cout << "error 1" << endl;
-            exit (EXIT_FAILURE);
-        } catch (const out_of_range& oor) {
-            cout << "error 1" << endl;
-            exit (EXIT_FAILURE);
+        } catch (const invalid_argument& ia) { // if entry is not a number and cannot be converted
+            error(1);
+        } catch (const out_of_range& oor) { // if entry is not representable by a double
+            error(1);
         }
-        if ((q.corner1.x > 100) || (q.corner1.x < 0) || (q.corner1.y > 100) || (q.corner1.y < 0) || (q.corner2.y > 100) || (q.corner2.y < 0) || (q.corner2.y > 100) || (q.corner2.y < 0) || (q.corner3.y > 100) || (q.corner3.y < 0) || (q.corner3.y > 100) || (q.corner3.y < 0) ||
-            (q.corner4.y > 100) || (q.corner4.y < 0) || (q.corner4.y > 100) || (q.corner4.y < 0)) {
-            cout << "error 1" << endl; // at least one point is outside range
-            exit (EXIT_FAILURE);
+        if (shapeCoordinatesAreOutOfRange(q)) {
+            error(1);
         }
-        if (coordinatesCoincide(q.corner1, q.corner2) || coordinatesCoincide(q.corner1, q.corner3) || coordinatesCoincide(q.corner1, q.corner4) || coordinatesCoincide(q.corner2, q.corner3) || coordinatesCoincide(q.corner2, q.corner4) || coordinatesCoincide(q.corner3, q.corner4)) {
-            cout << "error 2" << endl; // at least two points coincide
-            exit (EXIT_FAILURE);
+        if (shapeCoordinatesCoincide(q)) {
+            error(2);
+        }
+        if (shapeSidesIntersect(q)) {
+            error(3);
+        }
+        if (hasThreeOrMoreColinearPoints(q)) {
+            error(4);
         }
         allQuadrilaterals.push_back(q); // add quadrilateral to vector
     }
@@ -97,8 +166,6 @@ bool allRightAngles(const quadrilateral& q) {
     double slopeR = slope(q.corner2.x, q.corner2.y, q.corner3.x, q.corner3.y);
     double slopeT = slope(q.corner4.x, q.corner4.y, q.corner3.x, q.corner3.y);
     double slopeB = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
-    double negRecipSlopeL = -1.0 / slopeL;
-    double negRecipSlopeR = -1.0 / slopeR;
     bool sidesAreVertical = (slopeL == 1000000) && (slopeR == 1000000) && (abs(slopeT) < tolerance) && (abs(slopeB) < tolerance);
     return sidesAreVertical;
 }
@@ -219,9 +286,16 @@ int main(int argc, const char * argv[]) {
         istringstream ss(line);
         istream_iterator<string> begin(ss), end;
         vector<string> numbersInLine(begin, end); //putting each number in the vector
-        if (numbersInLine.size() != 6) { // if line does not have the right number of points, quit
-            cout << "error 1" << endl;
-            exit (EXIT_FAILURE);
+        if (line == "" || line == " " || line == "\n") { // if there is nothing on the line, ignore it
+            continue;
+        }
+        if (numbersInLine.size() != 6) { // if line does not have the right number of points
+            error(1);
+        }
+        for (string s : numbersInLine) { // entry contains non-digits
+            if (containsInvalidChars(s)) {
+                error(1);
+            }
         }
         allInput.push_back(numbersInLine);
     }
