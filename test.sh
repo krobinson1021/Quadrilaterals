@@ -5,4 +5,24 @@
 ./main < kites.txt >> output.txt
 ./main < trapezoids.txt >> output.txt
 ./main < quadrilaterals.txt >> output.txt
+./main < error1A.txt >> output.txt
+./main < error1B.txt >> output.txt
+./main < error1C.txt >> output.txt
+./main < error1D.txt >> output.txt
+./main < error1E.txt >> output.txt
+./main < error1F.txt >> output.txt
+./main < error1G.txt >> output.txt
+./main < error1H.txt >> output.txt
+./main < error2A.txt >> output.txt
+./main < error2B.txt >> output.txt
+./main < error3A.txt >> output.txt
+./main < error3B.txt >> output.txt
+./main < error3C.txt >> output.txt
+./main < error3D.txt >> output.txt
+./main < error3E.txt >> output.txt
+./main < error3F.txt >> output.txt
+./main < error3G.txt >> output.txt
+./main < error3H.txt >> output.txt
+./main < error4A.txt >> output.txt
+./main < error4B.txt >> output.txt
 diff output.txt expected_output.txt
