@@ -286,9 +286,9 @@ int main(int argc, const char * argv[]) {
         istringstream ss(line);
         istream_iterator<string> begin(ss), end;
         vector<string> numbersInLine(begin, end); //putting each number in the vector
-        if (line == "" || line == " " || line == "\n") { // if there is nothing on the line, ignore it
-            continue;
-        }
+//        if (line == "" || line == " " || line == "\n") { // if there is nothing on the line, ignore it
+//            continue;
+//        }
         if (numbersInLine.size() != 6) { // if line does not have the right number of points
             error(1);
         }
