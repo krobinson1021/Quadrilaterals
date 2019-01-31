@@ -105,7 +105,7 @@ void error(int errorValue) {
  Each string in the vector must contain all 8 coordinates for a quadrilateral
  separated by spaces
  */
-vector<quadrilateral> createQuadrsFromData(const vector<vector<string>>& data) {
+vector<quadrilateral> createQuadrsFromData(const vector<vector<string> >& data) {
     vector<quadrilateral> allQuadrilaterals;
     for (int i = 0; i < data.size(); i++) { // for each line in file, add points to quadrilateral
         quadrilateral q;
@@ -271,7 +271,7 @@ void outputAllClassifications(const vector<quadrilateral>& data) {
 int main(int argc, const char * argv[]) {
     
     cout.precision(4);
-    vector<vector<string>> allInput;
+    vector<vector<string> > allInput;
     string line;
     string delimiter = " ";
     while (!cin.eof()) { // as long as there is data to read and the end of the file is not reached
