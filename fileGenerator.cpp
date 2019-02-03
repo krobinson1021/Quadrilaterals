@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string>
 #include <vector>
@@ -8,7 +9,7 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-    
+        
     vector<vector<string>> allLines;
     string line;
     string delimiter = " ";
