@@ -22,7 +22,9 @@ int main(int argc, const char * argv[]) {
         istringstream ss(line);
         istream_iterator<string> begin(ss), end;
         vector<string> parsedLine(begin, end);
-        allLines.push_back(parsedLine);
+        if (line.length() != 0) {
+            allLines.push_back(parsedLine);
+        }
     }
     infile.close();
 
@@ -37,7 +39,9 @@ int main(int argc, const char * argv[]) {
                     textFile << " ";
                 }
             }
-            textFile << endl;
+            if (j != allLines.size() - 1) {
+                textFile << endl;
+            }
         }
         textFile.close();
     }

@@ -7,8 +7,9 @@ Created on Sun Feb  3 16:47:29 2019
 """
 
 import os
-import subprocess
 import glob
+import subprocess
+from subprocess import Popen, PIPE
 
 # make directories if they do not already exist
 dirName = "validQuadTesting"
@@ -41,9 +42,15 @@ subprocess.call("./fileGenerator")
 # build C++ quadrilateral classifier
 subprocess.call(["clang++", "-c", "main.cpp"])
 subprocess.call(["clang++", "-o", "main", "main.o"])
+    
+for filepath in glob.iglob('/Users/katierobinson/Quadrilaterals/validQuadTesting/*.txt'):
+    input = open(filepath, 'rb').read()
+    running_proc = subprocess.Popen(['./main'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+    out, err = running_proc.communicate(input=input)
+    outfile = open("OUTPUT.txt", "w")
+    outfile.write(out.decode())
+    #subprocess.call(["diff", "allQuads_expectedOutput.txt", "OUTPUT.txt"])
 
-subprocess.call(["./main", "<", "validQuadTesting/1.txt", ">", "OUTPUT.txt"])
+#subprocess.call(["diff", "-w", "validQuadTesting/OUTPUT.txt", "allQuads_expectedOutput.txt"])
 
 # run quadrilateral classifier on each test file
-#for filepath in glob.iglob('/Users/katierobinson/Quadrilaterals/validQuadTesting/*.txt'):
-    #print(filepath)
