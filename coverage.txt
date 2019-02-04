@@ -63,8 +63,8 @@
    63|   258k|bool containsInvalidChars(string s) {
    64|   429k|    for (char c : s) {
    65|   429k|        if (!isdigit(c)) {
-   66|      3|            return true;
-   67|      3|        }
+   66|      0|            return true;
+   67|      0|        }
    68|   429k|    }
    69|   258k|    return false;
    70|   258k|}
@@ -95,10 +95,10 @@
    95|       |/*
    96|       | Helper function to simplify error handling.
    97|       | */
-   98|     21|void error(int errorValue) {
-   99|     21|    cout << "error " << errorValue << endl; // at least one point is outside range
-  100|     21|    exit (EXIT_FAILURE);
-  101|     21|}
+   98|      0|void error(int errorValue) {
+   99|      0|    cout << "error " << errorValue << endl; // at least one point is outside range
+  100|      0|    exit (EXIT_FAILURE);
+  101|      0|}
   102|       |
   103|       |/*
   104|       | Returns a vector of quadrilaterals populated the data from the vector of strings;
@@ -106,8 +106,8 @@
   106|       | Each string in the vector must contain all 8 coordinates for a quadrilateral
   107|       | separated by spaces
   108|       | */
-  109|  1.01k|vector<quadrilateral> createQuadrsFromData(const vector<vector<string> >& data) {
-  110|  1.01k|    vector<quadrilateral> allQuadrilaterals;
+  109|  1.00k|vector<quadrilateral> createQuadrsFromData(const vector<vector<string> >& data) {
+  110|  1.00k|    vector<quadrilateral> allQuadrilaterals;
   111|  44.0k|    for (int i = 0; i < data.size(); i++) { // for each line in file, add points to quadrilateral
   112|  43.0k|        quadrilateral q;
   113|  43.0k|        q.corner1.x = 0.0;
@@ -119,21 +119,21 @@
   119|  43.0k|        q.corner4.x = stod(data[i][4]);
   120|  43.0k|        q.corner4.y = stod(data[i][5]);
   121|  43.0k|        if (shapeCoordinatesAreOutOfRange(q)) {
-  122|      1|            error(1);
-  123|      1|        }
+  122|      0|            error(1);
+  123|      0|        }
   124|  43.0k|        if (shapeCoordinatesCoincide(q)) {
-  125|      2|            error(2);
-  126|      2|        }
+  125|      0|            error(2);
+  126|      0|        }
   127|  43.0k|        if (shapeSidesIntersect(q)) {
-  128|      8|            error(3);
-  129|      8|        }
+  128|      0|            error(3);
+  129|      0|        }
   130|  43.0k|        if (hasThreeOrMoreColinearPoints(q)) {
-  131|      3|            error(4);
-  132|      3|        }
+  131|      0|            error(4);
+  132|      0|        }
   133|  43.0k|        allQuadrilaterals.push_back(q); // add quadrilateral to vector
   134|  43.0k|    }
-  135|  1.01k|    return allQuadrilaterals;
-  136|  1.01k|}
+  135|  1.00k|    return allQuadrilaterals;
+  136|  1.00k|}
   137|       |
   138|       |/*
   139|       | Returns distance between two points;
@@ -269,32 +269,32 @@
   269|  43.0k|    }
   270|  1.00k|}
   271|       |
-  272|  1.02k|int main(int argc, const char * argv[]) {
-  273|  1.02k|    
-  274|  1.02k|    cout.precision(4);
-  275|  1.02k|    vector<vector<string> > allInput;
-  276|  1.02k|    string line;
-  277|  1.02k|    string delimiter = " ";
+  272|  1.00k|int main(int argc, const char * argv[]) {
+  273|  1.00k|    
+  274|  1.00k|    cout.precision(4);
+  275|  1.00k|    vector<vector<string> > allInput;
+  276|  1.00k|    string line;
+  277|  1.00k|    string delimiter = " ";
   278|  44.0k|    while (!cin.eof()) { // as long as there is data to read and the end of the file is not reached
   279|  43.0k|        getline(cin, line);
   280|  43.0k|        istringstream ss(line);
   281|  43.0k|        istream_iterator<string> begin(ss), end;
   282|  43.0k|        vector<string> numbersInLine(begin, end); //putting each number in the vector
   283|  43.0k|        if (numbersInLine.size() != 6) { // if line does not have the right number of points
-  284|      4|            error(1);
-  285|      4|        }
+  284|      0|            error(1);
+  285|      0|        }
   286|  43.0k|        assert (numbersInLine.size() == 6);
   287|   258k|        for (string s : numbersInLine) { // entry contains non-digits
   288|   258k|            if (containsInvalidChars(s)) {
-  289|      3|                error(1);
-  290|      3|            }
+  289|      0|                error(1);
+  290|      0|            }
   291|   258k|        }
   292|  43.0k|        allInput.push_back(numbersInLine);
   293|  43.0k|    }
-  294|  1.02k|    assert (allInput.size() != 0);
-  295|  1.02k|    vector<quadrilateral> allQuadrilaterals = createQuadrsFromData(allInput);
-  296|  1.02k|    outputAllClassifications(allQuadrilaterals);
-  297|  1.02k|    
-  298|  1.02k|    return 0;
-  299|  1.02k|}
+  294|  1.00k|    assert (allInput.size() != 0);
+  295|  1.00k|    vector<quadrilateral> allQuadrilaterals = createQuadrsFromData(allInput);
+  296|  1.00k|    outputAllClassifications(allQuadrilaterals);
+  297|  1.00k|    
+  298|  1.00k|    return 0;
+  299|  1.00k|}
 
