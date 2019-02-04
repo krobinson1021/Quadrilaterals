@@ -61,11 +61,11 @@
    61|       | Returns true if string contains non-digit characters.
    62|       | */
    63|   258k|bool containsInvalidChars(string s) {
-   64|   429k|    for (char c : s) {
-   65|   429k|        if (!isdigit(c)) {
+   64|   378k|    for (char c : s) {
+   65|   378k|        if (!isdigit(c)) {
    66|      0|            return true;
    67|      0|        }
-   68|   429k|    }
+   68|   378k|    }
    69|   258k|    return false;
    70|   258k|}
    71|       |
