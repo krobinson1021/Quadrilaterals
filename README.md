@@ -1,2 +1,0 @@
-# Quadrilaterals
-cs6015

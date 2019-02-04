@@ -9,12 +9,13 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-        
-    vector<vector<string>> allLines;
+    
+    vector<vector<string> > allLines;
     string line;
     string delimiter = " ";
     ifstream infile;
     
+
     infile.open ("allQuads_input.txt");
     while(!infile.eof()) {
         getline(infile,line);
