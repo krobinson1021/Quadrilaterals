@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 
 import os
 import glob
 import subprocess
 from subprocess import Popen, PIPE
 import filecmp
+import time
 
 # make directories if they do not already exist
 dirName = "validQuadTesting"
@@ -40,12 +40,18 @@ subprocess.call(["clang++", "-c", "main.cpp"])
 subprocess.call(["clang++", "-o", "main", "main.o"])
     
 # run quadrilateral classifier on each test file
+flag = True
 for filepath in glob.iglob("validQuadTesting/*.txt"):
     input = open(filepath, "rb").read()
     running_proc = subprocess.Popen(["./main"], stdout=PIPE, stdin=PIPE, stderr=PIPE)
     out, err = running_proc.communicate(input=input)
     outfile = open("OUTPUT.txt", "w")
     outfile.write(out.decode())
-    subprocess.call(["diff", "-w", "-B", "OUTPUT.txt", "allQuads_expectedOutput.txt"])
-    if os.stat("OUTPUT.txt").st_size == 0:
-        subprocess.call(["open", filepath])
+    outfile.flush()
+    subprocess.Popen(["diff", "OUTPUT.txt", "allQuads_expectedOutput.txt"])
+    if filecmp.cmp("OUTPUT.txt", "allQuads_expectedOutput.txt", shallow=True) == False:
+        flag = False
+if flag == True:
+    print("OK")
+else:
+    print("ERROR")

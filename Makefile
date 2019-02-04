@@ -1,7 +1,8 @@
 all: fuzzer coverage
 
 fuzzer:
-	python "pythonScript.py"
+	chmod +x fuzz.py
+	./fuzz.py
 
 coverage:
 	clang++ -fprofile-instr-generate -fcoverage-mapping main.cpp -o main
