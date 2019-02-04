@@ -1,0 +1,297 @@
+    1|       |#include <fstream>
+    2|       |#include <iostream>
+    3|       |#include <iomanip>
+    4|       |#include <math.h>
+    5|       |#include <string>
+    6|       |#include <sstream>
+    7|       |#include <vector>
+    8|       |
+    9|       |using namespace std;
+   10|       |
+   11|       |const double tolerance = 0.00001;
+   12|       |/*
+   13|       | Struct representing a coordinate pair
+   14|       | */
+   15|       |struct coordinatePair {
+   16|       |    double x;
+   17|       |    double y;
+   18|       |};
+   19|       |
+   20|       |/*
+   21|       | Struct representing a quadrilateral, with the corners labeled in counterclockwise fashion
+   22|       | */
+   23|       |struct quadrilateral {
+   24|       |    coordinatePair corner1;
+   25|       |    coordinatePair corner2;
+   26|       |    coordinatePair corner3;
+   27|       |    coordinatePair corner4;
+   28|       |} ;
+   29|       |
+   30|       |/*
+   31|       | True if coordinates are the same.
+   32|       | */
+   33|   258k|bool areEqual(coordinatePair first, coordinatePair second) {
+   34|   258k|    return ((first.x == second.x) && (first.y == second.y));
+   35|   258k|}
+   36|       |
+   37|       |/*
+   38|       | True if quadrilateral has at least one pair of equal coordinates.
+   39|       | */
+   40|  43.0k|bool shapeCoordinatesCoincide(quadrilateral q) {
+   41|  43.0k|    return (areEqual(q.corner1, q.corner2) || areEqual(q.corner1, q.corner3) || areEqual(q.corner1, q.corner4) || areEqual(q.corner2, q.corner3) || areEqual(q.corner2, q.corner4) || areEqual(q.corner3, q.corner4));
+   42|  43.0k|}
+   43|       |
+   44|       |/*
+   45|       | True if coordinates are colinear.
+   46|       | */
+   47|  43.0k|bool hasThreeOrMoreColinearPoints(quadrilateral q) {
+   48|  43.0k|    return (q.corner1.x == q.corner2.x && q.corner2.x == q.corner3.x) || (q.corner1.x == q.corner3.x && q.corner3.x == q.corner4.x) || (q.corner2.x == q.corner3.x && q.corner3.x == q.corner4.x) || (q.corner1.x == q.corner2.x && q.corner2.x == q.corner4.x) || (q.corner1.y == q.corner2.y && q.corner2.y == q.corner3.y) || (q. corner1.y == q.corner3.y && q.corner3.y == q.corner4.y) || (q.corner2.y == q.corner3.y && q.corner3.y == q.corner4.y) || (q.corner1.y == q.corner2.y && q.corner2.y == q.corner4.y);
+   49|  43.0k|}
+   50|       |
+   51|       |/*
+   52|       | True if at least one value is outside range.
+   53|       | */
+   54|  43.0k|bool shapeCoordinatesAreOutOfRange(quadrilateral q) {
+   55|  43.0k|    return ((q.corner1.x > 100) || (q.corner1.x < 0) || (q.corner1.y > 100) || (q.corner1.y < 0) || (q.corner2.y > 100) || (q.corner2.y < 0) || (q.corner2.y > 100) || (q.corner2.y < 0) || (q.corner3.y > 100) || (q.corner3.y < 0) || (q.corner3.y > 100) || (q.corner3.y < 0) ||
+   56|  43.0k|            (q.corner4.y > 100) || (q.corner4.y < 0) || (q.corner4.y > 100) || (q.corner4.y < 0));
+   57|  43.0k|}
+   58|       |
+   59|       |/*
+   60|       | Returns true if string contains non-digit characters.
+   61|       | */
+   62|   258k|bool containsInvalidChars(string s) {
+   63|   410k|    for (char c : s) {
+   64|   410k|        if (!isdigit(c)) {
+   65|      3|            return true;
+   66|      3|        }
+   67|   410k|    }
+   68|   258k|    return false;
+   69|   258k|}
+   70|       |
+   71|       |/*
+   72|       | This description applies to the following two functions.
+   73|       | Algorithm for determining whether line segments cross referenced from https://bryceboe.com "Line Segment Intersection Algorithm"
+   74|       | pointsAreCounterClockWise() is a helper function called in lineSegmentsIntersect().
+   75|       | lineSegmentsIntersect() returns true if line segments cross each other.
+   76|       | pointsAreCounterClockWise returns true if the points are counter clockwise.
+   77|       | */
+   78|   176k|bool pointsAreCounterClockWise(coordinatePair A, coordinatePair B, coordinatePair C) {
+   79|   176k|    return ((C.y - A.y) * (B.x - A.x)) > ((B.y - A.y) * (C.x - A.x));
+   80|   176k|}
+   81|       |
+   82|  86.0k|bool lineSegmentsIntersect(coordinatePair A, coordinatePair B, coordinatePair C, coordinatePair D) {
+   83|  86.0k|    return (pointsAreCounterClockWise(A, C, D) != pointsAreCounterClockWise(B, C, D)) && (pointsAreCounterClockWise(A, B, C) != pointsAreCounterClockWise(A, B, D));
+   84|  86.0k|}
+   85|       |
+   86|       |/*
+   87|       | True if any lines in quadrilateral intersect.
+   88|       | Only compares opposite sides because it is logically impossible for adjacent sides to intersect.
+   89|       | */
+   90|  43.0k|bool shapeSidesIntersect(quadrilateral q) {
+   91|  43.0k|    return (lineSegmentsIntersect(q.corner1, q.corner2, q.corner3, q.corner4) || lineSegmentsIntersect(q.corner2, q.corner3, q.corner4, q.corner1));
+   92|  43.0k|}
+   93|       |
+   94|       |/*
+   95|       | Helper function to simplify error handling.
+   96|       | */
+   97|     21|void error(int errorValue) {
+   98|     21|    cout << "error " << errorValue << endl; // at least one point is outside range
+   99|     21|    exit (EXIT_FAILURE);
+  100|     21|}
+  101|       |
+  102|       |/*
+  103|       | Returns a vector of quadrilaterals populated the data from the vector of strings;
+  104|       | strings converted to doubles to allow coordinate arithmetic;
+  105|       | Each string in the vector must contain all 8 coordinates for a quadrilateral
+  106|       | separated by spaces
+  107|       | */
+  108|  1.01k|vector<quadrilateral> createQuadrsFromData(const vector<vector<string> >& data) {
+  109|  1.01k|    vector<quadrilateral> allQuadrilaterals;
+  110|  44.0k|    for (int i = 0; i < data.size(); i++) { // for each line in file, add points to quadrilateral
+  111|  43.0k|        quadrilateral q;
+  112|  43.0k|        q.corner1.x = 0.0;
+  113|  43.0k|        q.corner1.y = 0.0;
+  114|  43.0k|        q.corner2.x = stod(data[i][0]);
+  115|  43.0k|        q.corner2.y = stod(data[i][1]);
+  116|  43.0k|        q.corner3.x = stod(data[i][2]);
+  117|  43.0k|        q.corner3.y = stod(data[i][3]);
+  118|  43.0k|        q.corner4.x = stod(data[i][4]);
+  119|  43.0k|        q.corner4.y = stod(data[i][5]);
+  120|  43.0k|        if (shapeCoordinatesAreOutOfRange(q)) {
+  121|      1|            error(1);
+  122|      1|        }
+  123|  43.0k|        if (shapeCoordinatesCoincide(q)) {
+  124|      2|            error(2);
+  125|      2|        }
+  126|  43.0k|        if (shapeSidesIntersect(q)) {
+  127|      8|            error(3);
+  128|      8|        }
+  129|  43.0k|        if (hasThreeOrMoreColinearPoints(q)) {
+  130|      3|            error(4);
+  131|      3|        }
+  132|  43.0k|        allQuadrilaterals.push_back(q); // add quadrilateral to vector
+  133|  43.0k|    }
+  134|  1.01k|    return allQuadrilaterals;
+  135|  1.01k|}
+  136|       |
+  137|       |/*
+  138|       | Returns distance between two points;
+  139|       | referenced from: https://www.geeksforgeeks.org/program-calculate-distance-two-points/
+  140|       | */
+  141|   154k|double distance(double x1, double y1, double x2, double y2) {
+  142|   154k|    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
+  143|   154k|}
+  144|       |
+  145|       |/*
+  146|       | Returns slope of the line between two points
+  147|       | */
+  148|   420k|double slope(double x1, double y1, double x2, double y2) {
+  149|   420k|    if (x2 - x1 < tolerance) {
+  150|  94.0k|        return 1000000;
+  151|  94.0k|    }
+  152|   326k|    return ((y2 - y1) / (x2 - x1));
+  153|   326k|}
+  154|       |
+  155|       |/*
+  156|       | Returns true if quadrilateral has four right angles
+  157|       | */
+  158|  75.0k|bool allRightAngles(const quadrilateral& q) {
+  159|  75.0k|    double slopeL = slope(q.corner1.x, q.corner1.y, q.corner4.x, q.corner4.y);
+  160|  75.0k|    double slopeR = slope(q.corner2.x, q.corner2.y, q.corner3.x, q.corner3.y);
+  161|  75.0k|    double slopeT = slope(q.corner4.x, q.corner4.y, q.corner3.x, q.corner3.y);
+  162|  75.0k|    double slopeB = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
+  163|  75.0k|    bool sidesAreVertical = (slopeL == 1000000) && (slopeR == 1000000) && (abs(slopeT) < tolerance) && (abs(slopeB) < tolerance);
+  164|  75.0k|    return sidesAreVertical;
+  165|  75.0k|}
+  166|       |
+  167|       |/*
+  168|       | Returns true if top and bottom sides of quadrilateral are parallel
+  169|       | */
+  170|  40.0k|bool topAndBottomParallel(const quadrilateral& q) {
+  171|  40.0k|    double slopeB = slope(q.corner1.x, q.corner1.y, q.corner4.x, q.corner4.y);
+  172|  40.0k|    double slopeT = slope(q.corner2.x, q.corner2.y, q.corner3.x, q.corner3.y);
+  173|  40.0k|    return abs(slopeB - slopeT) < tolerance;
+  174|  40.0k|}
+  175|       |
+  176|       |/*
+  177|       | Returns true if left and right sides of quadrilateral are parallel
+  178|       | */
+  179|  20.0k|bool leftAndRightParallel(const quadrilateral& q) {
+  180|  20.0k|    double slopeR = slope(q.corner4.x, q.corner4.y, q.corner3.x, q.corner3.y);
+  181|  20.0k|    double slopeL = slope(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
+  182|  20.0k|    return (abs(slopeL - slopeR) < tolerance);
+  183|  20.0k|}
+  184|       |
+  185|  53.0k|bool sidesEqualLength(quadrilateral q) {
+  186|  53.0k|    double lengthB = distance(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
+  187|  53.0k|    double lengthL = distance(q.corner1.x, q.corner1.y, q.corner4.x, q.corner4.y);
+  188|  53.0k|    return abs(lengthB - lengthL) < tolerance;
+  189|  53.0k|}
+  190|       |
+  191|       |/*
+  192|       | Returns true if quadrilateral is a square
+  193|       | */
+  194|  43.0k|bool isSquare(const quadrilateral& q) {
+  195|  43.0k|    return allRightAngles(q) && sidesEqualLength(q);
+  196|  43.0k|}
+  197|       |
+  198|       |/*
+  199|       | Returns true if quadrilateral is a rhombus
+  200|       | */
+  201|  33.0k|bool isRhombus(const quadrilateral& q) {
+  202|  33.0k|    return sidesEqualLength(q) && topAndBottomParallel(q) && leftAndRightParallel(q);
+  203|  33.0k|}
+  204|       |
+  205|       |/*
+  206|       | Returns true if quadrilateral is a rectangle
+  207|       | */
+  208|  32.0k|bool isRectangle(const quadrilateral& q) {
+  209|  32.0k|    return allRightAngles(q);
+  210|  32.0k|}
+  211|       |
+  212|       |/*
+  213|       | Returns true if quadrilateral is a parallelogram
+  214|       | */
+  215|  22.0k|bool isParallelogram(const quadrilateral& q) {
+  216|  22.0k|    return topAndBottomParallel(q) && leftAndRightParallel(q);
+  217|  22.0k|}
+  218|       |
+  219|       |/*
+  220|       | Returns true if quadrilateral is a trapezoid
+  221|       | */
+  222|  7.00k|bool isTrapezoid(const quadrilateral& q) {
+  223|  7.00k|    return  (topAndBottomParallel(q) && !leftAndRightParallel(q)) || (!topAndBottomParallel(q) && leftAndRightParallel(q));
+  224|  7.00k|}
+  225|       |
+  226|       |/*
+  227|       | Returns true if quadrilateral is a kite
+  228|       | */
+  229|  12.0k|bool isKite(const quadrilateral& q) {
+  230|  12.0k|    double lengthB = distance(q.corner1.x, q.corner1.y, q.corner2.x, q.corner2.y);
+  231|  12.0k|    double lengthT = distance(q.corner3.x, q.corner3.y, q.corner4.x, q.corner4.y);
+  232|  12.0k|    double lengthL = distance(q.corner4.x, q.corner4.y, q.corner1.x, q.corner1.y);
+  233|  12.0k|    double lengthR = distance(q.corner2.x, q.corner2.y, q.corner3.x, q.corner3.y);
+  234|  12.0k|    return (lengthL == lengthB) && (lengthR == lengthT);
+  235|  12.0k|}
+  236|       |
+  237|       |/*
+  238|       | Prints the most specific classification of the quadrilateral to the console
+  239|       | on its own line; if quadrilateral is not a square, rhombus, rectangle, parallelogram,
+  240|       | kite, or trapezoid, it will print quadrilateral
+  241|       | */
+  242|  43.0k|void printQuadrType(const quadrilateral& q) {
+  243|  43.0k|    if (isSquare(q)) {
+  244|  10.0k|        cout << "square";
+  245|  33.0k|    } else if (isRhombus(q)) {
+  246|  1.00k|        cout << "rhombus";
+  247|  32.0k|    } else if (isRectangle(q)) {
+  248|  10.0k|        cout << "rectangle";
+  249|  22.0k|    } else if (isParallelogram(q)) {
+  250|  10.0k|        cout << "parallelogram";
+  251|  12.0k|    } else if (isKite(q)) {
+  252|  5.00k|        cout << "kite";
+  253|  7.00k|    } else if (isTrapezoid(q)) {
+  254|  4.00k|        cout << "trapezoid";
+  255|  4.00k|    } else {
+  256|  3.00k|        cout << "quadrilateral";
+  257|  3.00k|    }
+  258|  43.0k|    cout << endl;
+  259|  43.0k|}
+  260|       |
+  261|       |/*
+  262|       | Will loop through all quadrilaterals in the vector and print
+  263|       | their classification to the console on individual lines
+  264|       | */
+  265|  1.00k|void outputAllClassifications(const vector<quadrilateral>& data) {
+  266|  44.0k|    for (int i = 0; i < data.size(); i++) {
+  267|  43.0k|        printQuadrType(data[i]);
+  268|  43.0k|    }
+  269|  1.00k|}
+  270|       |
+  271|  1.02k|int main(int argc, const char * argv[]) {
+  272|  1.02k|    
+  273|  1.02k|    cout.precision(4);
+  274|  1.02k|    vector<vector<string> > allInput;
+  275|  1.02k|    string line;
+  276|  1.02k|    string delimiter = " ";
+  277|  44.0k|    while (!cin.eof()) { // as long as there is data to read and the end of the file is not reached
+  278|  43.0k|        getline(cin, line);
+  279|  43.0k|        istringstream ss(line);
+  280|  43.0k|        istream_iterator<string> begin(ss), end;
+  281|  43.0k|        vector<string> numbersInLine(begin, end); //putting each number in the vector
+  282|  43.0k|        if (numbersInLine.size() != 6) { // if line does not have the right number of points
+  283|      4|            error(1);
+  284|      4|        }
+  285|   258k|        for (string s : numbersInLine) { // entry contains non-digits
+  286|   258k|            if (containsInvalidChars(s)) {
+  287|      3|                error(1);
+  288|      3|            }
+  289|   258k|        }
+  290|  43.0k|        allInput.push_back(numbersInLine);
+  291|  43.0k|    }
+  292|  1.02k|    vector<quadrilateral> allQuadrilaterals = createQuadrsFromData(allInput);
+  293|  1.02k|    outputAllClassifications(allQuadrilaterals);
+  294|  1.02k|    
+  295|  1.02k|    return 0;
+  296|  1.02k|}
+
