@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -282,6 +283,7 @@ int main(int argc, const char * argv[]) {
         if (numbersInLine.size() != 6) { // if line does not have the right number of points
             error(1);
         }
+        assert (numbersInLine.size() == 6);
         for (string s : numbersInLine) { // entry contains non-digits
             if (containsInvalidChars(s)) {
                 error(1);
@@ -289,6 +291,7 @@ int main(int argc, const char * argv[]) {
         }
         allInput.push_back(numbersInLine);
     }
+    assert (allInput.size() != 0);
     vector<quadrilateral> allQuadrilaterals = createQuadrsFromData(allInput);
     outputAllClassifications(allQuadrilaterals);
     
