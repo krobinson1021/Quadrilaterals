@@ -30,7 +30,7 @@ int main(int argc, const char * argv[]) {
     infile.close();
 
     for (int i = 1; i <= 1000; i++) {
-        string filename = "/Users/katierobinson/Quadrilaterals/validQuadTesting/" + to_string(i) + ".txt";
+        string filename = "/Users/katierobinson/Quadrilaterals/validQuadTesting/test" + to_string(i) + ".txt";
         ofstream textFile (filename);
         srand (time(NULL));
         int scalingFactor = rand() % 10 + 1; // nothing in the input text file has a coordinate bigger than 10
