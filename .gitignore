@@ -1,9 +1,6 @@
 # Ignore Mac system files
 .DS_store
 
-# Ignore all text files
-*.txt
-
 # Ignore all prof files
 *.profraw
 *.profdata
