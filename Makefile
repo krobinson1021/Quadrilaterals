@@ -1,12 +1,7 @@
-all: main test
+all: fuzzer coverage
 
-main: main.cpp
-	clang++ -c main.cpp
-	clang++ -o main main.o
-
-test: main
-	chmod +x test.sh
-	./test.sh
+fuzzer:
+	python "pythonScript.py"
 
 coverage:
 	clang++ -fprofile-instr-generate -fcoverage-mapping main.cpp -o main

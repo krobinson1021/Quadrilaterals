@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <string>
 #include <vector>
 
@@ -31,6 +32,7 @@ int main(int argc, const char * argv[]) {
     for (int i = 1; i <= 1000; i++) {
         string filename = "/Users/katierobinson/Quadrilaterals/validQuadTesting/" + to_string(i) + ".txt";
         ofstream textFile (filename);
+        srand (time(NULL));
         int scalingFactor = rand() % 10 + 1; // nothing in the input text file has a coordinate bigger than 10
         for (int j = 0; j < allLines.size(); j++) {
             for (int k = 0; k < allLines[j].size(); k++) { // for each x or y value in the line

@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Sun Feb  3 16:47:29 2019
-
-@author: katierobinson
-"""
 
 import os
 import glob
 import subprocess
 from subprocess import Popen, PIPE
+import filecmp
 
 # make directories if they do not already exist
 dirName = "validQuadTesting"
@@ -43,14 +39,13 @@ subprocess.call("./fileGenerator")
 subprocess.call(["clang++", "-c", "main.cpp"])
 subprocess.call(["clang++", "-o", "main", "main.o"])
     
-for filepath in glob.iglob('/Users/katierobinson/Quadrilaterals/validQuadTesting/*.txt'):
-    input = open(filepath, 'rb').read()
-    running_proc = subprocess.Popen(['./main'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+# run quadrilateral classifier on each test file
+for filepath in glob.iglob("validQuadTesting/*.txt"):
+    input = open(filepath, "rb").read()
+    running_proc = subprocess.Popen(["./main"], stdout=PIPE, stdin=PIPE, stderr=PIPE)
     out, err = running_proc.communicate(input=input)
     outfile = open("OUTPUT.txt", "w")
     outfile.write(out.decode())
-    #subprocess.call(["diff", "allQuads_expectedOutput.txt", "OUTPUT.txt"])
-
-#subprocess.call(["diff", "-w", "validQuadTesting/OUTPUT.txt", "allQuads_expectedOutput.txt"])
-
-# run quadrilateral classifier on each test file
+    subprocess.call(["diff", "-w", "-B", "OUTPUT.txt", "allQuads_expectedOutput.txt"])
+    if os.stat("OUTPUT.txt").st_size == 0:
+        subprocess.call(["open", filepath])
