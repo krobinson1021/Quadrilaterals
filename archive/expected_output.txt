@@ -1,0 +1,118 @@
+square
+square
+square
+square
+square
+square
+square
+square
+square
+square
+square
+square
+square
+square
+square
+square
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+rectangle
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+parallelogram
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+rhombus
+kite
+kite
+kite
+kite
+kite
+kite
+kite
+kite
+kite
+kite
+kite
+kite
+kite
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+trapezoid
+quadrilateral
+quadrilateral
+quadrilateral
+quadrilateral
+quadrilateral
+quadrilateral
+quadrilateral
+quadrilateral
+error 1
+error 1
+error 1
+error 1
+error 1
+error 1
+error 1
+error 1
+error 2
+error 2
+error 3
+error 3
+error 3
+error 3
+error 3
+error 3
+error 3
+error 3
+error 4
+error 4
+error 4

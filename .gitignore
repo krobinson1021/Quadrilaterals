@@ -4,6 +4,3 @@
 # Ignore all prof files
 *.profraw
 *.profdata
-
-# Ignore txt files by default
-*.txt
