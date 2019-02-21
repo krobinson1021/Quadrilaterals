@@ -8,8 +8,8 @@ This directory contains the expected output text files and the input file used f
 # coverage.txt
 This file contains the llvm line coverage results. The Quadrilateral Classifier had 100% line coverage.
 
-# PDFWriteups
+# pdfWriteups
 This directory contains the test oracle and differential testing PDF writeups.
 
-# Archive
+# archive
 This directory contains the old Travis files from the continuous integration assignment, as well as the original manual testing .txt files.
